@@ -11,5 +11,5 @@ mydcbot_koboldai.py
 用於串接英語系的語言模組，有最簡單的人格，KoboldAI可用的Chat Model與其他可能有能力對話的語言模組
 
 mydcbot_koboldai_forbloom1b1.py
-用於串接繁體中文系的語言模組，我寫的AI人格應該能讓ckip-joint/bloom-1b1-zh有一定程度的回應能力
+用於串接繁體中文系的語言模組，我主要是為了ckip-joint/bloom-1b1-zh去寫AI人格的，不過用在其他繁體中文Model應該也是能通用
 
