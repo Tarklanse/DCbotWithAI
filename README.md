@@ -2,7 +2,7 @@
 A simple discord Bot using API to connect KoboldAI's API
 簡單能夠和KoboldAI串接的DC機器人
 
-這個機器人本身不包含KoboldAAI或其他主持語言模組的功能，請需要自行尋找koboldAI的安裝與使用方式
+這個機器人本身不包含KoboldAI或其他主持語言模組的功能，請需要自行尋找koboldAI的安裝與使用方式
 這個機器人不具記憶能力，如果需要記憶能力需自行編寫字典去存咒文
 
 目前我寫了兩個版本，分別是給英語系Model與繁體中文系Model用的，需自行申請建立Discord APP並修改程式內client.run中的---為申請的機器人權杖
