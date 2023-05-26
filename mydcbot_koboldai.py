@@ -1,5 +1,7 @@
 import discord
 import requests
+import argparse
+import json
 
 # 建立機器人實例
 intents = discord.Intents.default()
@@ -13,6 +15,7 @@ AIReplied=""
 parser = argparse.ArgumentParser()
 parser.add_argument("AIPersonalName", help="AIPersonalName")
 args = parser.parse_args()
+#personal setting
 def setting(personal):
     with open('./AIPersonals.json', 'r' , encoding='utf-8') as file:
         data = json.load(file)
@@ -74,6 +77,9 @@ async def on_message(message):
     #只對含有'hey AI,'的訊息做AI回應，會在去除'hey AI,'後交給AI
     if 'hey AI,' in message.content :
         await message.channel.send(chatwithAI(message.content.replace(substring_to_remove, "")))
+    if 'Personal change to:' in message.content :
+        setting(message.content.replace('Personal change to:', ""))
+        await message.channel.send("Now,I'm "+message.content.replace('Personal change to:', ""))
 
 # 使用機器人的權杖啟動機器人
-client.run('---')
+client.run('MTExMDUzNDEwNjI3NTY1OTc4Ng.Gd6xAU.ioPr5Nm2A0r1P-gXj58O44LL3jotjM2qv70GbQ')
