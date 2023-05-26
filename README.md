@@ -4,7 +4,7 @@ A simple discord Bot using API to connect KoboldAI's API
 
 簡單能夠和KoboldAI串接的DC機器人
 
-這個機器人本身不包含KoboldAI或其他主持語言模組的功能，請需要自行尋找koboldAI的安裝與使用方式
+這個機器人本身不包含KoboldAI或其他主持語言模組的功能，請自行尋找koboldAI的安裝與使用方式
 
 這個機器人會將最近的20次對話記憶下來，並儲存於記憶體中，重新啟動會清除，跟他說Clean AI memorys也會將這些記憶清除
 
