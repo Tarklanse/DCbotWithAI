@@ -13,18 +13,19 @@ AIReplied=""
 parser = argparse.ArgumentParser()
 parser.add_argument("AIPersonalName", help="AIPersonalName")
 args = parser.parse_args()
-def setting():
+def setting(personal):
     with open('./AIPersonals.json', 'r' , encoding='utf-8') as file:
         data = json.load(file)
-    personal=str(args.AIPersonalName)
     global AIPersonalPrompt
     global UserAsk
     global AIReplied    
     try:
+        print("Current Personal:"+personal)
         AIPersonalPrompt=data[personal]["personal"]
         UserAsk=data[personal]["UserAsk"]
         AIReplied=data[personal]["AIReplied"]
     except:
+        print("Current Personal:"+"DefualtAI")
         AIPersonalPrompt=data["DefualtAI"]["personal"]
         UserAsk=data["DefualtAI"]["UserAsk"]
         AIReplied=data["DefualtAI"]["AIReplied"]
@@ -34,6 +35,7 @@ def setting():
 #當機器人完成啟動時
 async def on_ready():
     print('目前登入身份：', client.user)
+    setting(str(args.AIPersonalName))
 
 # 發送 API 請求
 def chatwithAI(chat_prompt):
