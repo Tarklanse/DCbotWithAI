@@ -7,6 +7,7 @@ import json
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
+dcbottoken=""
 
 AIPersonalPrompt=""
 UserAsk=""
@@ -14,7 +15,11 @@ AIReplied=""
 
 parser = argparse.ArgumentParser()
 parser.add_argument("AIPersonalName", help="AIPersonalName")
+parser.add_argument("BotToken", help="BotToken")
 args = parser.parse_args()
+
+dcbottoken=args.BotToken
+
 #personal setting
 def setting(personal):
     with open('./AIPersonals.json', 'r' , encoding='utf-8') as file:
@@ -82,4 +87,4 @@ async def on_message(message):
         await message.channel.send("Now,I'm "+message.content.replace('Personal change to:', ""))
 
 # 使用機器人的權杖啟動機器人
-client.run('---')
+client.run(dcbottoken)
