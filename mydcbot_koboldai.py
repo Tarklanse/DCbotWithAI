@@ -6,6 +6,29 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
+AIPersonalPrompt=""
+UserAsk=""
+AIReplied=""
+
+parser = argparse.ArgumentParser()
+parser.add_argument("AIPersonalName", help="AIPersonalName")
+args = parser.parse_args()
+def setting():
+    with open('./AIPersonals.json', 'r' , encoding='utf-8') as file:
+        data = json.load(file)
+    personal=str(args.AIPersonalName)
+    global AIPersonalPrompt
+    global UserAsk
+    global AIReplied    
+    try:
+        AIPersonalPrompt=data[personal]["personal"]
+        UserAsk=data[personal]["UserAsk"]
+        AIReplied=data[personal]["AIReplied"]
+    except:
+        AIPersonalPrompt=data["DefualtAI"]["personal"]
+        UserAsk=data["DefualtAI"]["UserAsk"]
+        AIReplied=data["DefualtAI"]["AIReplied"]
+
 #調用 event 函式庫
 @client.event
 #當機器人完成啟動時
@@ -21,9 +44,8 @@ def chatwithAI(chat_prompt):
             'Content-Type': 'application/json'
         }
         #AI人格的咒文
-        AI_personal="A very powerful AI can replied any question."
         data = {
-            "prompt": AI_personal+" You:"+chat_prompt+ "AI:",
+            "prompt": AIPersonalPrompt+UserAsk+chat_prompt+ AIReplied,
             "temperature": 0.5,
             "top_p": 0.9
         }
@@ -33,7 +55,7 @@ def chatwithAI(chat_prompt):
             reply = response.json()['results'][0]['text']
             print(f'KoboldAI 回覆：{reply}')
             #因為AI會產生一連串的回應，將第一次出現You:之前的訊息視為AI回應，並去除多餘的'AI:'
-            return reply.split("You:")[0].replace("AI:", "")
+            return reply.split(UserAsk)[0].replace(AIReplied, "")
         else:
             print('無法連接到 KoboldAI API')
     except :
