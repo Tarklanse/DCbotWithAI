@@ -2,16 +2,21 @@ import discord
 import requests
 import argparse
 import json
+from collections import deque
 
 # 建立機器人實例
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
+
 dcbottoken=""
 
 AIPersonalPrompt=""
 UserAsk=""
 AIReplied=""
+
+#bot have twenty memory
+Botsmemory= deque(maxlen=20)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("AIPersonalName", help="AIPersonalName")
@@ -53,19 +58,24 @@ def chatwithAI(chat_prompt):
         headers = {
             'Content-Type': 'application/json'
         }
+        global Botsmemory
+        MemoryInPrompt = "".join(Botsmemory)
         #AI人格的咒文
         data = {
-            "prompt": AIPersonalPrompt+UserAsk+chat_prompt+ AIReplied,
+            "prompt": AIPersonalPrompt+MemoryInPrompt+UserAsk+chat_prompt+ AIReplied,
             "temperature": 0.5,
-            "top_p": 0.9
+            "top_p": 0.9,
+            "repetition_penalty":1.2
         }
         response = requests.post(API_ENDPOINT, json=data, headers=headers)
         if response.status_code == 200:
             # 提取回覆訊息
             reply = response.json()['results'][0]['text']
             print(f'KoboldAI 回覆：{reply}')
+            finalreply=reply.split(UserAsk)[0].replace(AIReplied, "")
+            Botsmemory.append(UserAsk+chat_prompt+ AIReplied+finalreply)
             #因為AI會產生一連串的回應，將第一次出現You:之前的訊息視為AI回應，並去除多餘的'AI:'
-            return reply.split(UserAsk)[0].replace(AIReplied, "")
+            return finalreply
         else:
             print('無法連接到 KoboldAI API')
     except :
@@ -85,6 +95,10 @@ async def on_message(message):
     if 'Personal change to:' in message.content :
         setting(message.content.replace('Personal change to:', ""))
         await message.channel.send("Now,I'm "+message.content.replace('Personal change to:', ""))
+    if 'Clean AI memorys' in message.content :
+        global Botsmemory
+        Botsmemory.clear()
+        await message.channel.send("I clean my memorys."))
 
 # 使用機器人的權杖啟動機器人
 client.run(dcbottoken)
