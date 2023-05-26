@@ -1,0 +1,4 @@
+To run the code,You need to install those lib:
+discord
+argparse
+json
