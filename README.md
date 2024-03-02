@@ -25,3 +25,14 @@ python mydcbot_koboldai.py 人格名稱 機器人權杖
 2."Personal change to:"機器人會依據輸入去切會json中對應的人格，如果找不到一樣會載入DefualtAI
 
 3."Clean AI memorys":清除記憶
+
+------
+2024/03/02 新增
+mydcbot_oobawebui.py
+可與oobabooga text-generation-webui的api串接
+使用方式:
+python mydcbot_oobawebui.py 人格名稱 機器人權杖
+
+整體設計與mydcbot_koboldai一致
+新增記錄使用者與AI對話紀錄的模塊，會記錄使用者的輸入與AI對應的回傳
+
