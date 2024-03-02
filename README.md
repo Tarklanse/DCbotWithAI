@@ -28,9 +28,13 @@ python mydcbot_koboldai.py 人格名稱 機器人權杖
 
 ------
 2024/03/02 新增
+
 mydcbot_oobawebui.py
+
 可與oobabooga text-generation-webui的api串接
+
 使用方式:
+
 python mydcbot_oobawebui.py 人格名稱 機器人權杖
 
 整體設計與mydcbot_koboldai一致
