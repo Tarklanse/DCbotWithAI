@@ -17,8 +17,7 @@ AIPersonalPrompt=""
 UserAsk=""
 AIReplied=""
 
-#bot have twenty memory
-Botsmemory= deque(maxlen=20)
+Botsmemory= []
 
 parser = argparse.ArgumentParser()
 parser.add_argument("AIPersonalName", help="AIPersonalName")
@@ -84,33 +83,25 @@ def chatwithAI(chat_prompt):
             'Content-Type': 'application/json'
         }
         global Botsmemory
-        MemoryInPrompt = "".join(Botsmemory)
-        #AI人格的咒文
-        print(AIPersonalPrompt+MemoryInPrompt+UserAsk+chat_prompt+ AIReplied)
-        history = []
-        user_message = AIPersonalPrompt+MemoryInPrompt+UserAsk+chat_prompt+ AIReplied
-        history.append({"role": "user", "content": user_message})
+        Botsmemory.append({"role": "user", "content": chat_prompt})
         data = {
             "mode": "chat",
-            "messages": history
+            "character": "Dan",
+            "messages": Botsmemory
         }
-        #print(AIPersonalPrompt+MemoryInPrompt+UserAsk+chat_prompt+ AIReplied)
-        response = requests.post(API_ENDPOINT, json=data, headers=headers, verify=False)
+
+        response = requests.post(API_ENDPOINT, headers=headers, json=data, verify=False)
+
         if response.status_code == 200:
-            # 提取回覆訊息
-            reply = response.json()['choices'][0]['message']['content']
-            print(f'KoboldAI 回覆：{reply}')
-            finalreply=reply.split(UserAsk)[0].replace(AIReplied, "")
-            #print(UserAsk)
-            #print(finalreply)
-            Botsmemory.append(UserAsk+chat_prompt+ AIReplied+finalreply)
-            data_to_add = {"user_input": chat_prompt ,"AI_Output":finalreply}
-            chatlog(data_to_add)
-            #print(Botsmemory)
-            #因為AI會產生一連串的回應，將第一次出現You:之前的訊息視為AI回應，並去除多餘的'AI:'
-            return finalreply
+            assistant_message = response.json()['choices'][0]['message']['content']
+            Botsmemory.append({"role": "assistant", "content": assistant_message})
+            print(assistant_message)
+            return assistant_message
         else:
             print(str(response))
+            assistant_message = response.json()['choices'][0]['message']['content']
+            Botsmemory.append({"role": "assistant", "content": assistant_message})
+            print(assistant_message)
             return '無法連接到 koboldAI API'
     except Exception as e:
         print(e)
@@ -122,7 +113,7 @@ def chatwithAI(chat_prompt):
 async def on_message(message):
     substring_to_remove = "hey AI,"
     global Botsmemory
-    print(message)
+    #print(message)
     #機器人忽視自己的訊息
     if message.author == client.user:
         return
