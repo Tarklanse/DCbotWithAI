@@ -38,5 +38,21 @@ mydcbot_oobawebui.py
 python mydcbot_oobawebui.py 人格名稱 機器人權杖
 
 整體設計與mydcbot_koboldai一致
-新增記錄使用者與AI對話紀錄的模塊，會記錄使用者的輸入與AI對應的回傳
+新增記錄使用者與AI對話紀錄的模塊，會記錄使用者的輸入與AI對應的回傳  
+
+------
+2025/07/02 更新
+
+新增mydcbot_llamacpp_server.py
+
+使用方式:
+python mydcbot_llamacpp_server.py
+
+使用前需要:  
+1.手動更新12行中的dcbottoken=""為自己的機器人權杖  
+2.須更新12行中實際以llama.cpp server主持的API接口  
+
+在這個程式移除了之前加入的儲存對話紀錄的機制，以確保不會因為超多人使用而導致對話紀錄臃腫  
+移除了修改人格的指令(統一使用預設人格)以防止多伺服器使用時在非預期的情況切換人格  
+
 
